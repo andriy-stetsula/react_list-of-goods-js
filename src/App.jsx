@@ -16,20 +16,23 @@ export const goodsFromServer = [
 ];
 
 export const App = () => {
-  const [goodState, setGoodState] = useState(goodsFromServer);
   const [goodStyle, setGoodStyle] = useState(null);
   const [isReverse, setIsReverse] = useState(false);
+
+  const items = [...goodsFromServer];
+
+  if (goodStyle === 'alpha') items.sort((a, b) => a.localeCompare(b));
+  if (goodStyle === 'length') items.sort((a, b) => a.length - b.length);
+  if (isReverse) items.reverse();
 
   return (
     <div className="section content">
       <div className="buttons">
         <button
           type="button"
-          className={`button is-info ${goodStyle === 'alpha' ? 'is-light' : ''}`}
+          className={`button is-info ${goodStyle !== 'alpha' ? 'is-light' : ''}`}
           onClick={() => {
-            setGoodState([...goodState].sort((a, b) => a.localeCompare(b)));
             setGoodStyle('alpha');
-            setIsReverse(false);
           }}
         >
           Sort alphabetically
@@ -37,11 +40,9 @@ export const App = () => {
 
         <button
           type="button"
-          className={`button is-success ${goodStyle === 'length' ? 'is-light' : ''}`}
+          className={`button is-success ${goodStyle !== 'length' ? 'is-light' : ''}`}
           onClick={() => {
-            setGoodState([...goodState].sort((a, b) => a.length - b.length));
             setGoodStyle('length');
-            setIsReverse(false);
           }}
         >
           Sort by length
@@ -49,23 +50,20 @@ export const App = () => {
 
         <button
           type="button"
-          className={`button is-warning ${goodStyle ? 'is-light' : ''}`}
+          className={`button is-warning ${!isReverse ? 'is-light' : ''}`}
           onClick={() => {
-            setGoodState([...goodState].reverse());
-            setGoodStyle(false);
             setIsReverse(!isReverse);
           }}
         >
           Reverse
         </button>
 
-        {goodState !== goodsFromServer && (
+        {(goodStyle !== null || isReverse) && (
           <button
             type="button"
-            className={`button is-danger ${goodStyle === 'reset' ? 'is-light' : ''}`}
+            className="button is-danger"
             onClick={() => {
-              setGoodState(goodsFromServer);
-              setGoodStyle('reset');
+              setGoodStyle(null);
               setIsReverse(false);
             }}
           >
@@ -75,7 +73,7 @@ export const App = () => {
       </div>
 
       <ul>
-        {goodState.map(item => (
+        {items.map(item => (
           <li key={item} data-cy="Good">
             {item}
           </li>
