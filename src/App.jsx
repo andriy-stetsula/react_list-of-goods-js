@@ -17,13 +17,13 @@ export const goodsFromServer = [
 
 export const App = () => {
   const [goodStyle, setGoodStyle] = useState(null);
-  const [isReverse, setIsReverse] = useState(false);
+  const [isRevers, setIsReverse] = useState(false);
 
   const items = [...goodsFromServer];
 
   if (goodStyle === 'alpha') items.sort((a, b) => a.localeCompare(b));
   if (goodStyle === 'length') items.sort((a, b) => a.length - b.length);
-  if (isReverse) items.reverse();
+  if (isRevers) items.reverse();
 
   return (
     <div className="section content">
@@ -50,15 +50,15 @@ export const App = () => {
 
         <button
           type="button"
-          className={`button is-warning ${!isReverse ? 'is-light' : ''}`}
+          className={`button is-warning ${!isRevers ? 'is-light' : ''}`}
           onClick={() => {
-            setIsReverse(!isReverse);
+            setIsReverse(!isRevers);
           }}
         >
           Reverse
         </button>
 
-        {(goodStyle !== null || isReverse) && (
+        {(goodStyle !== null || isRevers) && (
           <button
             type="button"
             className="button is-danger"
