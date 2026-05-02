@@ -15,15 +15,20 @@ export const goodsFromServer = [
   'Garlic',
 ];
 
-export const App = () => {
-  const [goodStyle, setGoodStyle] = useState(null);
-  const [isRevers, setIsReverse] = useState(false);
-
-  const items = [...goodsFromServer];
+function getSortedGoods(good, goodStyle, isRevers) {
+  const items = [...good];
 
   if (goodStyle === 'alpha') items.sort((a, b) => a.localeCompare(b));
   if (goodStyle === 'length') items.sort((a, b) => a.length - b.length);
   if (isRevers) items.reverse();
+
+  return items;
+}
+
+export const App = () => {
+  const [goodStyle, setGoodStyle] = useState(null);
+  const [isRevers, setIsReverse] = useState(false);
+  const items = getSortedGoods(goodsFromServer, goodStyle, isRevers);
 
   return (
     <div className="section content">
